@@ -3,11 +3,6 @@ import pandas as pd
 import datetime 
 import time
 import MetaTrader5 as mt5
-        
-# establish connection to the MetaTrader 5 terminal
-if not mt5.initialize():
-    print("initialize() failed, error code =",mt5.last_error())
-    #quit()
     
 class Trader: #parent
     """
@@ -15,7 +10,6 @@ class Trader: #parent
     Send Trade request to MT5 server based on defined parameters.
     
     Functions:
-        MT5pytrader.connect() - Connects to a specified account 
         MT5pytrader.open_buy() - Open a buy position 
         MT5pytrader.open_sell() - Open a sell position 
         MT5pytrader.close_buy() - close a buy position using the symbol or ticket_id
@@ -28,11 +22,20 @@ class Trader: #parent
         MT5pytrader.modify_tp() - Modify Take profit of a position using the symbol or ticket_id
         MT5pytrader.get_open_positions() - Returns a list of all open position as a pandas Dataframe
         MT5pytrader.running_profit() - Returns the cummulative sum of all runnig trades (profit/loss)
-        MT5pytrader.break_even() - Break even on a trade position running in profit
+        MT5pytrader.break_even() - Break even on a running position in profit
+
     """
     
     def __init__(self, comment = "MT5pytrader", magic = 260000, deviation = 20, type_time = mt5.ORDER_TIME_GTC, type_filling = mt5.SYMBOL_TRADE_EXECUTION_INSTANT):
+        
+        # establish connection to the MetaTrader 5 terminal
+        if not mt5.initialize():
+            print("initialize() failed, error code =",mt5.last_error())
 
+        else:
+            print("successfully initialized. Please allow Auto trading")
+            #quit()
+            
         self.comment = comment #"MT5pytrader"
         self.magic = magic #260000
         self.deviation = deviation #20
@@ -40,7 +43,7 @@ class Trader: #parent
         self.type_filling = type_filling #mt5.SYMBOL_TRADE_EXECUTION_INSTANT
         
     def __repr__(self):
-        return "MT5pytrader"
+        return "MT5pytrader Instance"
         #return f"MT5pytrader(symbol: {self.symbol}, Lot_size: {self.lot}, Stop_loss: {self.sl}, Take_profit: {self.tp})"
     
     #def connect to mt5 account
@@ -78,6 +81,17 @@ class Trader: #parent
         self.magic = magic
         self.sl = stop_loss
         self.tp = take_profit
+        
+        #get symbol info
+        symbol_info = mt5.symbol_info(self.symbol)
+        if symbol_info is None:
+            print(self.symbol, "not found")
+        
+        # if the symbol is unavailable in MarketWatch, add it
+        if not symbol_info.visible:
+            print(self.symbol, "is not visible, trying to switch on")
+            if not mt5.symbol_select(self.symbol,True):
+                print("symbol_select({}}) failed, exit",syself.symbol)
         
         point = mt5.symbol_info(self.symbol).point
         price = mt5.symbol_info_tick(self.symbol).bid
@@ -187,6 +201,17 @@ class Trader: #parent
         self.magic = magic
         self.sl = stop_loss
         self.tp = take_profit
+        
+        #get symbol info
+        symbol_info = mt5.symbol_info(self.symbol)
+        if symbol_info is None:
+            print(self.symbol, "not found")
+        
+        # if the symbol is unavailable in MarketWatch, add it
+        if not symbol_info.visible:
+            print(self.symbol, "is not visible, trying to switch on")
+            if not mt5.symbol_select(self.symbol,True):
+                print("symbol_select({}}) failed, exit",syself.symbol)
         
         point = mt5.symbol_info(self.symbol).point
         price = mt5.symbol_info_tick(self.symbol).ask     
@@ -300,6 +325,17 @@ class Trader: #parent
         self.sl = stop_loss
         self.tp = take_profit
         
+        #get symbol info
+        symbol_info = mt5.symbol_info(self.symbol)
+        if symbol_info is None:
+            print(self.symbol, "not found")
+        
+        # if the symbol is unavailable in MarketWatch, add it
+        if not symbol_info.visible:
+            print(self.symbol, "is not visible, trying to switch on")
+            if not mt5.symbol_select(self.symbol,True):
+                print("symbol_select({}}) failed, exit",syself.symbol)
+        
         point = mt5.symbol_info(self.symbol).point
         
         
@@ -362,7 +398,7 @@ class Trader: #parent
                 "tp": self.price + (self.tp * point),
                 "comment": self.comment,
                 "type_time":self.type_time,
-                "type_filling": self.type_filling, 
+                "type_filling": self.type_filling,
             }
 
 
@@ -410,6 +446,17 @@ class Trader: #parent
         self.magic = magic
         self.sl = stop_loss
         self.tp = take_profit
+        
+        #get symbol info
+        symbol_info = mt5.symbol_info(self.symbol)
+        if symbol_info is None:
+            print(self.symbol, "not found")
+        
+        # if the symbol is unavailable in MarketWatch, add it
+        if not symbol_info.visible:
+            print(self.symbol, "is not visible, trying to switch on")
+            if not mt5.symbol_select(self.symbol,True):
+                print("symbol_select({}}) failed, exit",syself.symbol)
         
         point = mt5.symbol_info(self.symbol).point       
         
@@ -511,6 +558,17 @@ class Trader: #parent
         self.ticket_id = ticket_id
         self.symbol = symbol
         
+        #get symbol info
+        symbol_info = mt5.symbol_info(self.symbol)
+        if symbol_info is None:
+            print(self.symbol, "not found")
+        
+        # if the symbol is unavailable in MarketWatch, add it
+        if not symbol_info.visible:
+            print(self.symbol, "is not visible, trying to switch on")
+            if not mt5.symbol_select(self.symbol,True):
+                print("symbol_select({}}) failed, exit",syself.symbol)
+        
         #get position using position_id
         if self.ticket_id != None:
             
@@ -600,6 +658,17 @@ class Trader: #parent
         
         self.ticket_id = ticket_id
         self.symbol = symbol
+        
+        #get symbol info
+        symbol_info = mt5.symbol_info(self.symbol)
+        if symbol_info is None:
+            print(self.symbol, "not found")
+        
+        # if the symbol is unavailable in MarketWatch, add it
+        if not symbol_info.visible:
+            print(self.symbol, "is not visible, trying to switch on")
+            if not mt5.symbol_select(self.symbol,True):
+                print("symbol_select({}}) failed, exit",syself.symbol)
         
         #get position using position_id
         if self.ticket_id != None:
@@ -696,6 +765,17 @@ class Trader: #parent
         self.ticket_id = ticket_id
         self.percent = percent
         
+        #get symbol info
+        symbol_info = mt5.symbol_info(self.symbol)
+        if symbol_info is None:
+            print(self.symbol, "not found")
+        
+        # if the symbol is unavailable in MarketWatch, add it
+        if not symbol_info.visible:
+            print(self.symbol, "is not visible, trying to switch on")
+            if not mt5.symbol_select(self.symbol,True):
+                print("symbol_select({}}) failed, exit",syself.symbol)
+        
         #get position using position_id
         if self.ticket_id != None:
             
@@ -789,6 +869,17 @@ class Trader: #parent
         self.ticket_id = ticket_id
         self.symbol = symbol
         self.percent = percent
+        
+        #get symbol info
+        symbol_info = mt5.symbol_info(self.symbol)
+        if symbol_info is None:
+            print(self.symbol, "not found")
+        
+        # if the symbol is unavailable in MarketWatch, add it
+        if not symbol_info.visible:
+            print(self.symbol, "is not visible, trying to switch on")
+            if not mt5.symbol_select(self.symbol,True):
+                print("symbol_select({}}) failed, exit",syself.symbol)
         
         #get position using position_id
         if self.ticket_id != None:
@@ -950,6 +1041,18 @@ class Trader: #parent
         self.ticket_id = ticket_id
         self.sl = sl
         
+        #get symbol info
+        symbol_info = mt5.symbol_info(self.symbol)
+        if symbol_info is None:
+            print(self.symbol, "not found")
+        
+        # if the symbol is unavailable in MarketWatch, add it
+        if not symbol_info.visible:
+            print(self.symbol, "is not visible, trying to switch on")
+            if not mt5.symbol_select(self.symbol,True):
+                print("symbol_select({}}) failed, exit",syself.symbol)
+                
+        
         if self.ticket_id is not None: 
             # prepare the request
             positions=mt5.positions_get(ticket = self.ticket_id)
@@ -996,7 +1099,7 @@ class Trader: #parent
                     print(f"Order Sent! {result.order}")
         
         
-        elif symbol is not None: 
+        elif self.symbol is not None: 
         
             # prepare the request
             
@@ -1060,6 +1163,18 @@ class Trader: #parent
         self.ticket_id = ticket_id
         self.tp = tp
         
+        #get symbol info
+        symbol_info = mt5.symbol_info(self.symbol)
+        if symbol_info is None:
+            print(self.symbol, "not found")
+        
+        # if the symbol is unavailable in MarketWatch, add it
+        if not symbol_info.visible:
+            print(self.symbol, "is not visible, trying to switch on")
+            if not mt5.symbol_select(self.symbol,True):
+                print("symbol_select({}}) failed, exit",syself.symbol)
+                
+        
         if self.ticket_id is not None: 
             # prepare the request
             positions=mt5.positions_get(ticket = self.ticket_id)
@@ -1104,7 +1219,7 @@ class Trader: #parent
                 print(f"Order Sent! {result.order}")
         
         
-        elif symbol is not None: 
+        elif self.symbol is not None: 
         
             # prepare the request
             
@@ -1164,6 +1279,18 @@ class Trader: #parent
             """
         self.symbol = symbol
         self.ticket = ticket_id
+        
+        #get symbol info
+        symbol_info = mt5.symbol_info(self.symbol)
+        if symbol_info is None:
+            print(self.symbol, "not found")
+        
+        # if the symbol is unavailable in MarketWatch, add it
+        if not symbol_info.visible:
+            print(self.symbol, "is not visible, trying to switch on")
+            if not mt5.symbol_select(self.symbol,True):
+                print("symbol_select({}}) failed, exit",syself.symbol)
+                
         
         if self.ticket != None: 
             # prepare the request
@@ -1249,8 +1376,3 @@ class Trader: #parent
                 else:
                     print(f"Order Sent! {result.order}")
         
-
-
-
-
-
