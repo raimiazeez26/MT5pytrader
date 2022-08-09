@@ -32,11 +32,36 @@ Install the dependencies and devDependencies and start the server.
 pip install MT5pytrader
 ```
 
+```
 #### Dependence
 Please install the latest version of MetaTrader5 and numpy
 ```sh
 pip install --upgrade numpy
 pip install MetraTrader5
+```
+
+## Usage
+```sh
+>>> from MT5pytrader import Trader
+
+#instantiate 
+>>> trader = Trader()
+
+Connect to a specified account
+>>> trader.connect(account, password, server) 
+
+open a buy position
+>>> trader.open_buy(symbol:str, lot:int = 0.1, stop_loss:int = None, take_profit:int = None, magic:int = 260000, comment:str = "MT5pytrader")
+
+#open buy position on GBPUSD with 1.0lot size and 200points stop loss with no take profit
+>>> trader.open_buy(symbol = "GBPUSD", lot = 1.0, sl = 200) 
+    
+open a sell position
+>>> trader.open_sell(symbol:str, lot:int = 0.1, stop_loss:int = None, take_profit:int = None, magic:int = 260000, comment:str = "MT5pytrader")
+
+#open sell position on CADJPY with 0.5 lot size and 150points take profit with no stop loss 
+>>> trader.open_sell(symbol = "CADJPY", lot = 0.5, tp = 150) 
+
 ```
 
 ## Development
