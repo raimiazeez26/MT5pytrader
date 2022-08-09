@@ -33,8 +33,9 @@ pip install MT5pytrader
 ```
 
 #### Dependence
-
+Please install the latest version of MetaTrader5 and numpy
 ```sh
+pip install --upgrade numpy
 pip install MetraTrader5
 ```
 
