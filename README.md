@@ -32,10 +32,10 @@ Install the dependencies and devDependencies and start the server.
 pip install MT5pytrader
 ```
 
-```
-#### Dependence
+## Dependence
+
 Please install the latest version of MetaTrader5 and numpy
-```sh
+``` sh
 pip install --upgrade numpy
 pip install MetraTrader5
 ```
