@@ -18,8 +18,9 @@ setup(
     keywords=['MT5pytrader', 'python', 'Metatrader5', 'MT5', 'algotrading',
              'autroading'],
     install_requires=[
-          'MetaTrader5',
-      ],
+        "MetaTrader5",
+        "pandas",
+    ],
     zip_safe = False
 
 )
