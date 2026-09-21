@@ -327,14 +327,17 @@ python -m twine check --strict dist/*
 ```
 
 Tests use an in-memory adapter and never place trades. The `tests/` folder contains
-the regression suite; `test_scripts/` contains standalone runners for connection,
-orders, positions, risk, data, and polling checks. Run all checks with:
+the regression suite. The `test_scripts/` folder contains runnable **usage examples**
+that call package features against your configured MT5 terminal. For example:
 
 ```bash
-python test_scripts/run_all.py
+python test_scripts/positions.py --symbol EURUSD
+python test_scripts/market_orders.py --side buy --lot 0.01
 ```
 
-See [test script instructions](test_scripts/README.md) for individual commands.
+Order-changing examples default to inspection/preview and require `--execute`
+to submit a request. See [sample code instructions](test_scripts/README.md) for
+environment setup and examples for each feature.
 Broker-specific demo validation is still required before a production release.
 Report issues with version, retcode, symbol properties, and a minimal reproduction;
 remove credentials and account identifiers.
