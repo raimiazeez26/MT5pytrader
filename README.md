@@ -6,8 +6,9 @@ Validated Python helpers for MetaTrader 5 execution, position management, and re
 
 **This branch prepares version 2.0.0.** It has not been published to PyPI as part
 of this change. Version 2 introduces explicit errors, structured results, and
-consistent empty DataFrames; read the [migration guide](https://github.com/raimiazeez26/MT5pytrader/blob/codex/mt5pytrader-2.0/docs/MIGRATION.md)
-before upgrading from 1.0.
+consistent empty DataFrames. When upgrading from 1.0, update callers to inspect
+`TradeResult`, handle `TradeError`, and process every result from symbol-wide
+operations. Existing method names and imports remain available.
 
 ## Features
 
@@ -325,10 +326,16 @@ python -m build
 python -m twine check --strict dist/*
 ```
 
-Tests use an in-memory adapter and never place trades. See
-[demo validation](https://github.com/raimiazeez26/MT5pytrader/blob/codex/mt5pytrader-2.0/docs/DEMO_VALIDATION.md),
-[release instructions](https://github.com/raimiazeez26/MT5pytrader/blob/codex/mt5pytrader-2.0/docs/RELEASING.md),
-and the [review implementation map](https://github.com/raimiazeez26/MT5pytrader/blob/codex/mt5pytrader-2.0/docs/IMPLEMENTATION.md).
+Tests use an in-memory adapter and never place trades. The `tests/` folder contains
+the regression suite; `test_scripts/` contains standalone runners for connection,
+orders, positions, risk, data, and polling checks. Run all checks with:
+
+```bash
+python test_scripts/run_all.py
+```
+
+See [test script instructions](test_scripts/README.md) for individual commands.
+Broker-specific demo validation is still required before a production release.
 Report issues with version, retcode, symbol properties, and a minimal reproduction;
 remove credentials and account identifiers.
 

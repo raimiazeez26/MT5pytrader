@@ -19,7 +19,7 @@ jobs:
       - run: python -m pip install --upgrade pip
       - run: python -m pip install -e . pandas ruff
       - run: python -m ruff check .
-      - run: python -m unittest discover -s tests -v
+      - run: python test_scripts/run_all.py
   package:
     runs-on: ubuntu-latest
     steps:
