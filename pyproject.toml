@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=77", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "MT5pytrader"
+version = "2.0.0"
+description = "Validated MetaTrader 5 execution, position management, and reporting"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{name = "Raimi Azeez Babatunde", email = "raimiazeez26@gmail.com"}]
+keywords = ["MetaTrader5", "MT5", "trading", "execution"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Operating System :: Microsoft :: Windows",
+  "Intended Audience :: Developers",
+  "Topic :: Office/Business :: Financial :: Investment",
+]
+dependencies = ["pandas>=2.0", "MetaTrader5>=5.0.45; sys_platform == 'win32'"]
+
+[project.optional-dependencies]
+dev = ["build>=1.2", "twine>=6", "ruff>=0.11", "coverage>=7"]
+
+[project.urls]
+Homepage = "https://github.com/raimiazeez26/MT5pytrader"
+Issues = "https://github.com/raimiazeez26/MT5pytrader/issues"
+
+[tool.setuptools]
+packages = ["MT5pytrader"]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F"]
